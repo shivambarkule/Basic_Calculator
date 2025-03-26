@@ -1,0 +1,73 @@
+import java.util.Scanner;
+
+public class BasicCalculator {
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        boolean continueCalculation = true;
+
+        while (continueCalculation) {
+            System.out.println("Select an operation: +, -, *, /, log, root, exp, or 'exit' to quit");
+            String operation = scanner.next();
+
+            if (operation.equalsIgnoreCase("exit")) {
+                continueCalculation = false;
+                System.out.println("Exiting the calculator.");
+                continue;
+            }
+
+            double result = 0;
+
+            switch (operation) {
+                case "+":
+                case "-":
+                case "*":
+                case "/":
+                    System.out.print("Enter first number: ");
+                    double num1 = scanner.nextDouble();
+                    System.out.print("Enter second number: ");
+                    double num2 = scanner.nextDouble();
+                    result = performBasicOperation(operation, num1, num2);
+                    break;
+                case "log":
+                    System.out.print("Enter a number for logarithm (base 10): ");
+                    double logNumber = scanner.nextDouble();
+                    result = Math.log10(logNumber);
+                    break;
+                case "root":
+                    System.out.print("Enter a number for square root: ");
+                    double rootNumber = scanner.nextDouble();
+                    result = Math.sqrt(rootNumber);
+                    break;
+                case "exp":
+                    System.out.print("Enter a number for exponentiation (e^x): ");
+                    double expNumber = scanner.nextDouble();
+                    result = Math.exp(expNumber);
+                    break;
+                default:
+                    System.out.println("Invalid operation. Please try again.");
+                    continue;
+            }
+
+            System.out.println("Result: " + result);
+        }
+
+        scanner.close();
+    }
+
+    private static double performBasicOperation(String operation, double num1, double num2) {
+        return switch (operation) {
+            case "+" -> num1 + num2;
+            case "-" -> num1 - num2;
+            case "*" -> num1 * num2;
+            case "/" -> {
+                if (num2 == 0) {
+                    System.out.println("Error: Division by zero is not allowed.");
+                    yield Double.NaN; // Return NaN to indicate an error
+                }
+                yield num1 / num2;
+            }
+            default -> Double.NaN; // Invalid operation
+        };
+    }
+}
